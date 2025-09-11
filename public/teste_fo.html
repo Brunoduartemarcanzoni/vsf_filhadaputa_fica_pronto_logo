@@ -7,7 +7,7 @@
     <title>Registro de Fatos Observados (F.O)</title>
     <link rel="stylesheet" href="geral.css">
     <link rel="stylesheet" href="Fo.css">
-    <script src="fo.js"></script>
+
 </head>
 <body>
     <!-- Cabeçalho com navegação -->
@@ -209,7 +209,7 @@
                             <div class="buttons-container">
                                 <button type="button" class="btn btn-secondary">Voltar</button>
                                 <button type="reset" class="btn btn-danger">Cancelar</button>
-                                <button type="submit" onclick="cadastrarfo(event)" class="btn btn-primary">Registrar F.O</button>
+                                <button type="submit" class="btn btn-primary" onclick="cadastrarfo(event)">Registrar F.O</button>
                             </div>
                         </form>
                     </section>
@@ -269,7 +269,7 @@
                             <div class="buttons-container">
                                 <button type="button" class="btn btn-secondary">Voltar</button>
                                 <button type="reset" class="btn btn-danger">Limpar</button>
-                                <button type="submit" class="btn btn-success" onclick="ata(event)">Salvar Ata</button>
+                                <button type="submit" class="btn btn-success" onclick="cadastrarata(event)">Salvar Ata</button>
                             </div>
                         </form>
                     </section>
@@ -467,7 +467,7 @@
                             <div class="buttons-container">
                                 <button type="button" class="btn btn-secondary">Voltar</button>
                                 <button type="reset" class="btn btn-danger" onclick="limparSelecoes()">Limpar</button>
-                                <button type="submit" class="btn btn-success">Enviar Encaminhamento</button>
+                                <button type="submit" class="btn btn-success" onclick=" cadastrarencaminhamento(event)">Enviar Encaminhamento</button>
                             </div>
                         </form>
                     </section>
@@ -513,7 +513,7 @@
 
     <!-- Rodapé -->
     <footer class="footer"></footer>
-<!--
+
     <script>
         // Sistema de Abas
         function showTab(tabId) {
@@ -633,6 +633,5 @@
             alert('Busca realizada! (Funcionalidade a ser implementada)');
         });
     </script>
-    -->
 </body>
 </html>
