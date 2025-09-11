@@ -1,4 +1,4 @@
-async function cadastrarfo(event) {
+async function cadastrarata(event) {
     event.preventDefault();
 
     const ata = {
@@ -8,6 +8,7 @@ async function cadastrarfo(event) {
         conteudo: document.getElementById("ataConteudo").value,
         encaminhamento: document.getElementById("ataEncaminhamento").value,
         participantes: document.getElementById("ataParticipantes").value,
+
     };
 
     try {
@@ -16,13 +17,13 @@ async function cadastrarfo(event) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(fo),
+            body: JSON.stringify(ata),
         });
 
         const result = await response.json();
         if (response.ok) {
             alert("ata cadastrado com sucesso!");
-            //document.getElementById('fo-form').reset();
+            //document.getElementById('ata-atarm').reset();
         } else {
             alert(`Erro: ${result.message}`);
         }
@@ -32,7 +33,7 @@ async function cadastrarfo(event) {
     }
 }
 
-// Função para listar todos os fo
+// Função para listar todos os ata
 async function listarata() {
     const aluno = document.getElementById("ataAluno").value.trim();
     const participantes = document.getElementById("ataParticipantes").value.trim();
@@ -41,10 +42,10 @@ async function listarata() {
     const data = document.getElementById("ataData").value.trim();
     const conteudo = document.getElementById("ataConteudo").value.trim();
     
-    let url = "/ata"; // URL padrão para todos os funcionario
+    let url = "/ata"; // URL padrão para todos os ata
 
     if (aluno) {
-        // Se aluno foi digitado, adiciona o parâmetro de consulta
+        // Se aluno atai digitado, adiciona o parâmetro de consulta
         url += `?aluno=${aluno}`;
     }
 
@@ -56,17 +57,17 @@ async function listarata() {
         tabela.innerHTML = ""; // Limpa a tabela antes de preencher
 
         if (!Array.isArray(ata) || ata.length === 0) {
-            // Caso não encontre funcionario, exibe uma mensagem
+            // Caso não encontre ata, exibe uma mensagem
             tabela.innerHTML =
-                '<tr><td colspan="6">Nenhum fo encontrado.</td></tr>';
+                '<tr><td colspan="6">Nenhum ata encontrado.</td></tr>';
         } else {
-            ata.forEach((ataItem) => {
+            ata.atarEach((ataItem) => {
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
                   <td>${ataItem.nome}</td>
                   <td>${ataItem.cgm}</td>
                   <td>${ataItem.email}</td>
-                  <td>${ataItem.telefone}</td>
+                  <td>${ataItem.teleatane}</td>
               `;
                 tabela.appendChild(linha);
             });
@@ -76,7 +77,7 @@ async function listarata() {
     }
 }
 
-// Função para atualizar as informações do funcionario
+// Função para atualizar as inatarmações do ata
 async function atualizarata() {
         aluno = document.getElementById("ataAluno").value,
         data = document.getElementById("ataData").value,
