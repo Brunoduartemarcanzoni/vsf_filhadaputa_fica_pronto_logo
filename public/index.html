@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="cadastro.css">
     <script src="cadastro.js"></script>
     <script src="funcionario.js"></script>
+    <script src="turma.js"></script>
 </head>
 <body>  
     <header class="header">
@@ -29,7 +30,6 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-
                 </div>
                 <div class="nav-text">CONSULTA</div>
             </a>
@@ -42,7 +42,6 @@
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    
                 </div>
                 <div class="nav-text">CADASTRO</div>
             </a>
@@ -105,11 +104,13 @@
             <!-- Controles das abas -->
             <input type="radio" name="tabs" id="tab1" class="tab-control" checked>
             <input type="radio" name="tabs" id="tab2" class="tab-control">
+            <input type="radio" name="tabs" id="tab3" class="tab-control">
 
             <!-- Rótulos das abas -->
             <div class="tab-labels">
                 <label for="tab1" class="tab-label">Cadastro de Aluno</label>
                 <label for="tab2" class="tab-label">Cadastro de Funcionário</label>
+                <label for="tab3" class="tab-label">Cadastro de Turma</label>
             </div>
 
             <!-- Conteúdo das abas -->
@@ -134,11 +135,11 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="required" for="aluno-cpf">CPF</label>
-                                    <input type="text" id="aluno-cpf" name="cpf" placeholder="000.000.000-00" required>
+                                    <input type="text" id="aluno-cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(event)" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="required" for="aluno-rg">RG</label>
-                                    <input type="text" id="aluno-rg" name="rg" placeholder="00.000.000-0">
+                                    <input type="text" id="aluno-rg" name="rg" placeholder="00.000.000-0" maxlength="11" oninput="aplicarMascaraRG(event)">
                                 </div>
                             </div>
                             
@@ -164,7 +165,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="required" for="aluno-telefone">Telefone</label>
-                                    <input type="tel" id="aluno-telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                                    <input type="tel" id="aluno-telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" oninput="aplicarMascaraTelefone(event)" required>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +175,7 @@
                             <h3>Endereço</h3>
                             <div class="form-group">
                                 <label class="required" for="aluno-cep">CEP</label>
-                                <input type="text" id="aluno-cep" name="cep" placeholder="00000-000" required>
+                                <input type="text" id="aluno-cep" name="cep" placeholder="00000-000" required onblur="buscarCEPAluno(event)">
                             </div>
                             
                             <div class="form-row">
@@ -253,15 +254,15 @@
                                 <select id="aluno-curso" name="curso" required>
                                     <option value="">Selecione</option>
                                     <option value="administracao">Administração</option>
-                                    <option value="computacao">turismo</option>
-                                    <option value="computacao">desenvolvimento de sistemas</option>
+                                    <option value="turismo">Turismo</option>
+                                    <option value="desenvolvimento">Desenvolvimento de Sistemas</option>
                                     <option value="outro">Outro</option>
                                 </select>
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="required" for="aluno-periodo">Turma</label>
+                                    <label class="required" for="aluno-turma">Turma</label>
                                     <select id="aluno-turma" name="periodo" required>
                                         <option value="">Selecione</option>
                                         <option value="9º Ano A">9º Ano A</option>
@@ -301,7 +302,7 @@
                                 <div class="responsavel-item" data-index="0">
                                     <div class="responsavel-hea">
                                         <h4>Responsável 1</h4>
-                                        <button type="button" class="btn-remove-responsavel" onclick="removerResponsavel(this)" style="display: none;">Remover</button>
+                                        <button type="button" class="btn-remove-responsavel" onclick="removerResponsavel(this)" style="display:none;">Remover</button>
                                     </div>
                                     
                                     <div class="form-row">
@@ -327,11 +328,11 @@
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label class="required" for="resp0-cpf">CPF</label>
-                                            <input type="text" id="resp0-cpf" name="responsavel[0][cpf]" placeholder="000.000.000-00" required>
+                                            <input type="text" id="resp0-cpf" name="responsavel[0][cpf]" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(event)" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="required" for="resp0-telefone">Telefone</label>
-                                            <input type="text" id="resp0-telefone" name="responsavel[0][telefone]" placeholder="(00) 00000-0000" required>
+                                            <input type="text" id="resp0-telefone" name="responsavel[0][telefone]" placeholder="(00) 00000-0000" maxlength="15" oninput="aplicarMascaraTelefone(event)" required>
                                         </div>
                                     </div>
                                     
@@ -344,12 +345,54 @@
                         </div>
                         
                         <div class="btn-container">
-                            <button type="button" class="btn btn-secondary" onclick="voltarPagina()">Voltar</button>
+                            <button type="submit" class="btn btn-secondary" onclick="listarAlunos()">Listar Alunos</button>
                             <button type="button" class="btn btn-danger" onclick="cancelarCadastro('aluno')">Cancelar</button>
-                            <button type="submit" class="btn btn-submit" onclick="cadastrarAluno(event)" >Cadastrar Aluno</button>
+                            <button type="submit" class="btn btn-submit" onclick="cadastrarAluno(event)">Cadastrar Aluno</button>
                         </div>
                     </form>
+
+                    <!-- Tabela de listagem de alunos -->
+                    <!-- <div class="student-info" id="studentInfo" style="display: none; margin-top: 30px;">
+                        <h3>Lista de Alunos Cadastrados</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CGM</th>
+                                    <th>CPF</th>
+                                    <th>Email</th>
+                                    <th>Turma</th>
+                                    <th>Telefone Responsável</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-aluno"> -->
+                                <!-- Linhas serão preenchidas pelo JavaScript -->
+                            <!-- </tbody>
+                        </table>
+                    </div>
+                    <div class="student-info" id="studentInfo">
+             <button type="button"  class="alinhaBtns">Listar Histórico</button> -->
+
+        <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cgm</th>
+                <th>Cpf</th>
+                <th>Email</th>
+                <th>Turma</th>
+                <th>Telefone Responsavel</th>
+            </tr>
+        </thead>
+        <tbody  id="tabela-aluno">
+            <!-- Linhas serão preenchidas pelo JavaScript -->
+        </tbody>
+        </table>
+
+
+
                 </div>
+                
 
                 <!-- Aba 2: Formulário de Funcionário -->
                 <div id="content2" class="tab-content">
@@ -371,11 +414,11 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="required" for="func-cpf">CPF</label>
-                                    <input type="text" id="func-cpf" name="cpf" placeholder="000.000.000-00" required>
+                                    <input type="text" id="func-cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" oninput="aplicarMascaraCPF(event)" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="required" for="func-rg">RG</label>
-                                    <input type="text" id="func-rg" name="rg" placeholder="00.000.000-0">
+                                    <input type="text" id="func-rg" name="rg" placeholder="00.000.000-0" maxlength="11" oninput="aplicarMascaraRG(event)">
                                 </div>
                             </div>
                             
@@ -421,11 +464,11 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="required" for="func-telefone">Telefone</label>
-                                    <input type="tel" id="func-telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                                    <input type="tel" id="func-telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" oninput="aplicarMascaraTelefone(event)" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="func-telefone-alternativo">Telefone Alternativo</label>
-                                    <input type="tel" id="func-telefone-alternativo" name="telefone_alternativo" placeholder="(00) 00000-0000">
+                                    <input type="tel" id="func-telefone-alternativo" name="telefone_alternativo" placeholder="(00) 00000-0000" maxlength="15" oninput="aplicarMascaraTelefone(event)">
                                 </div>
                             </div>
                         </div>
@@ -435,7 +478,7 @@
                             <h3>Endereço</h3>
                             <div class="form-group">
                                 <label class="required" for="func-cep">CEP</label>
-                                <input type="text" id="func-cep" name="cep" placeholder="00000-000" required>
+                                <input type="text" id="func-cep" name="cep" placeholder="00000-000" required onblur="buscarCEPFuncionario(event)">
                             </div>
                             
                             <div class="form-row">
@@ -509,13 +552,11 @@
                                     <label class="required" for="func-data-admissao">Data de Admissão</label>
                                     <input type="date" id="func-data-admissao" name="data_admissao" required>
                                 </div>
-                            </div>
-                            
-                            <div class="form-row">
                                 <div class="form-group">
                                     <label class="required" for="func-cargo">Cargo</label>
                                     <select id="func-cargo" name="cargo" required>
                                         <option value="">Selecione</option>
+                                        <option value="monitor">Monitor</option>
                                         <option value="professor">Professor</option>
                                         <option value="secretario">Secretário(a)</option>
                                         <option value="coordenador">Pedagogo(a)</option>
@@ -524,6 +565,7 @@
                                         <option value="tecnico-laboratorio">Técnico de Laboratório</option>
                                     </select>
                                 </div>
+                            </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
@@ -531,7 +573,7 @@
                                     <input type="number" id="func-carga-horaria" name="carga_horaria" min="1" max="60" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="required" for="func-tipo-contrato"> Contrato</label>
+                                    <label class="required" for="func-tipo-contrato">Contrato</label>
                                     <select id="func-tipo-contrato" name="tipo_contrato" required>
                                         <option value="">Selecione</option>
                                         <option value="clt">CLT</option>
@@ -544,21 +586,204 @@
                         </div>
                         
                         <div class="btn-container">
-                            <button type="button" class="btn btn-secondary" onclick="voltarPagina()">Voltar</button>
+                            <button type="button" class="btn btn-secondary" onclick="listarfuncionario()">Listar Funcionários</button>
                             <button type="button" class="btn btn-danger" onclick="cancelarCadastro('funcionario')">Cancelar</button>
                             <button type="submit" class="btn btn-submit" onclick="cadastrarfuncionario(event)">Cadastrar Funcionário</button>
                         </div>
                     </form>
+
+                    <!-- Tabela de listagem de funcionários -->
+                    <!-- <div class="funcionario-info" id="funcionarioInfo" style="display: none; margin-top: 30px;">
+                        <h3>Lista de Funcionários Cadastrados</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Email</th>
+                                    <th>Cargo</th>
+                                    <th>Telefone</th>
+                                    <th>Data Admissão</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-funcionario"> -->
+                                <!-- Linhas serão preenchidas pelo JavaScript -->
+                            <!-- </tbody>
+                        </table>
+                    </div> -->
+            <div class="student-info" id="studentInfo">
+
+        <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th>Telefone</th>
+                <th>Data Admissão</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-funcionario">
+            <!-- Linhas serão preenchidas pelo JavaScript -->
+        </tbody>
+        </table>
+
+        </div>
+
+                </div>
+                 
+                <!-- ABA 3: FORMULÁRIO DE TURMA -->
+                <div id="content3" class="tab-content">
+                    <form id="form-turma">
+                        <!-- Seção: Informações Básicas da Turma -->
+                        <div class="form-section">
+                            <h3>Informações da Turma</h3>
+
+                            <!-- Nome e Código da Turma -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="turma-nome">Nome da Turma</label>
+                                    <input type="text" id="turma-nome" name="nome_turma" placeholder="Ex: 1º Ano A" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="turma-codigo">Código da Turma</label>
+                                    <input type="text" id="turma-codigo" name="codigo" placeholder="Ex: TUR2025-001" required>
+                                </div>
+                            </div>
+
+                            <!-- Ano/Série e Turno -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="turma-ano">Ano/Série</label>
+                                    <select id="turma-ano" name="ano" required>
+                                        <option value="">Selecione</option>
+                                        <option value="9">9º Ano</option>
+                                        <option value="1">1º Ano</option>
+                                        <option value="2">2º Ano</option>
+                                        <option value="3">3º Ano</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="turma-turno">Turno</label>
+                                    <select id="turma-turno" name="turno" required>
+                                        <option value="">Selecione</option>
+                                        <option value="matutino">Matutino</option>
+                                        <option value="vespertino">Vespertino</option>
+                                        <option value="noturno">Noturno</option>
+                                        <option value="integral">Integral</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Curso e Ano Letivo -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="turma-curso">Curso</label>
+                                    <select id="turma-curso" name="curso" required>
+                                        <option value="">Selecione</option>
+                                        <option value="ensino-fundamental">Ensino Fundamental</option>
+                                        <option value="ensino-medio">Ensino Médio</option>
+                                        <option value="tecnico-administracao">Técnico em Administração</option>
+                                        <option value="tecnico-turismo">Técnico em Turismo</option>
+                                        <option value="tecnico-desenvolvimento">Técnico em Desenvolvimento de Sistemas</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="turma-ano-letivo">Ano Letivo</label>
+                                    <input type="number" id="turma-ano-letivo" name="ano_letivo" min="2020" max="2030" value="2025" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seção: Capacidade e Horários -->
+                        <div class="form-section">
+                            <h3>Capacidade e Horários</h3>
+
+                            <!-- Capacidade (número de alunos) e Sala -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="turma-capacidade">Capacidade (Nº de Alunos)</label>
+                                    <input type="number" id="turma-capacidade" name="capacidade" min="1" max="50" placeholder="Ex: 30" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="turma-sala">Sala/Local</label>
+                                    <input type="text" id="turma-sala" name="sala" placeholder="Ex: Sala 101" required>
+                                </div>
+                            </div>
+
+                            <!-- Horário de Início e Término das aulas -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="turma-horario-inicio">Horário de Início</label>
+                                    <input type="time" id="turma-horario-inicio" name="horario_inicio" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="turma-horario-fim">Horário de Término</label>
+                                    <input type="time" id="turma-horario-fim" name="horario_fim" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seção: Coordenação e Observações -->
+                        <div class="form-section">
+                            <h3>Coordenação e Observações</h3>
+
+                            <!-- Coordenador Responsável -->
+                            <div class="form-group">
+                                <label class="required" for="turma-coordenador">Coordenador(a) Responsável</label>
+                                <input type="text" id="turma-coordenador" name="coordenador" placeholder="Nome do coordenador" required>
+                            </div>
+
+                            <!-- Campo de texto para observações adicionais -->
+                            <div class="form-group">
+                                <label for="turma-observacoes">Observações</label>
+                                <textarea id="turma-observacoes" name="observacoes" placeholder="Informações adicionais sobre a turma..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Botões de ação -->
+                        <div class="btn-container">
+                            <button type="button" class="btn btn-secondary" onclick="listarturma()">Listar Turmas</button>
+                            <button type="button" class="btn btn-danger" onclick="limparturma()">Cancelar</button>
+                            <button type="submit" class="btn btn-submit" onclick="cadastrarturma(event)">Cadastrar Turma</button>
+                        </div>
+                    </form>
+
+                    <!-- Tabela de listagem de turmas -->
+                    <div class="turma-info" id="turmaInfo" style="display: none; margin-top: 30px;">
+                        <h3>Lista de Turmas Cadastradas</h3>
+                        
+                    </div>
+                    <div class="student-info" id="studentInfo">
+        <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Codigo</th>
+                <th>Ano</th>
+                <th>curso</th>
+                <th>ano letivo</th>
+    
+            </tr>
+        </thead>
+        <tbody id="tabela-turma" >
+            <!-- Linhas serão preenchidas pelo JavaScript -->
+        </tbody>
+        </table>
+
+        </div>
+
                 </div>
             </div>
         </div>
     </div>
-    </main>
-    <!-- Rodapé da página -->
-    <footer class="footer">
-        <!-- Espaço para conteúdo do rodapé -->
-    </footer>
+</main>
 
+<!-- Rodapé da página -->
+<footer class="footer">
+    <p>&copy; 2025 Sistema de Gestão Escolar. Todos os direitos reservados.</p>
+</footer>
 
 </body>
 </html>
